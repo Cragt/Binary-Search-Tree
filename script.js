@@ -34,19 +34,39 @@ class Node {
 }
 
 class Tree {
-  constructor(root) {
-    this.root = root;
+  constructor() {
+    this.root = null;
   }
 
   buildTree(array) {
     let mid = Math.floor(array.length / 2);
     let middle = array.splice(mid, 1);
-    let start = array.splice(0, mid);
-    let end = array.splice(1);
+    let left = array.splice(0, mid);
+    let right = array;
+    let current = this.root;
+    while (this.root === null) {
+      this.root = current;
+      current = new Node(Number(middle));
+      if (array.length > 1 && middle < current) {
+        current.left = this.buildTree(left);
+      }
+      if (array.length > 1 && middle > current) {
+        current.right = this.buildTree(right);
+      }
+      console.log(current);
+    }
 
-    console.log("start", start);
-    console.log("middle", middle);
-    console.log("end", end);
+    return current;
+    // if (current.left === null) {
+    //   current.left = this.buildTree(left);
+    // }
+
+    // if (current.left === null && left.length !== 0) {
+
+    //   return current.left = this.buildTree(left);
+
+    // }
+    // console.log(current);
   }
 
   insert(data) {
@@ -105,7 +125,9 @@ nums.forEach((element) => {
 // bst.insert(3);
 // bst.insert(2);
 // bst.insert(0);
-console.log(bst);
+// console.log(bst);
 
-bst.buildTree(nums);
+// bst.buildTree(nums);
 // prettyPrint();
+let number = new Tree();
+number.buildTree(nums);

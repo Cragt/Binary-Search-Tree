@@ -22,7 +22,6 @@ function mergeSort(array) {
   return merge(mergeSort(left), mergeSort(array));
 }
 
-let array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 //BST contructor
 class Node {
@@ -37,75 +36,73 @@ class Tree {
   constructor() {
     this.root = null;
   }
-
+  
   buildTree(array, start, end) {
     if (start > end) {
       return null;
     }
     let mid = Math.floor((start + end) / 2);
     let current = new Node(array[mid]);
-
+    
     current.left = this.buildTree(array, start, mid - 1);
     current.right = this.buildTree(array, mid + 1, end);
-
-    // const node = this.root;
-    // const prettyPrint = (node, prefix = "", isLeft = true) => {
-    //   if (node === null) {
-    //     return;
-    //   }
-    //   if (node.right !== null) {
-    //     prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-    //   }
-    //   console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-    //   if (node.left !== null) {
-    //     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-    //   }
-    // };
+    
     if (!this.root) {
       this.root = current;
     }
+    // let pretty = this.prettyPrint(current);
     return current;
   }
-
-  insert(data) {
-    if (!node) {
-      this.root = new Node(data);
+  
+  prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
+    if (node === null) {
       return;
+    }
+    if (node.right !== null) {
+      this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.left !== null) {
+      this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    };
+  };
+  insert(data) {
+    let newNode = new Node(data);
+  
+    if (!this.root) {
+      this.root = newNode;
+      return;
+    }
+  
+    let current = this.root;
+    let parent = null;
+  
+    while (current) {
+      parent = current;
+      if (data < current.data) {
+        current = current.left;
+      } else if (data > current.data) {
+        current = current.right;
+      } else {
+        // node with same value already exists in the tree
+        return;
+      }
+    }
+  
+    if (data < parent.data) {
+      parent.left = newNode;
     } else {
-      const searchTree = function (node, data) {
-        if (data < node.data) {
-          if (node.left === null) {
-            node.left = new Node(data);
-            return;
-          } else {
-            return searchTree(node.left, data);
-          }
-        } else if (data > node.data) {
-          if (node.right === null) {
-            node.right = new Node(data);
-            return;
-          } else {
-            return searchTree(node.right, data);
-          }
-        } else {
-          return null;
-        }
-      };
-      return searchTree(this.root, data), prettyPrint(this.root);
+      parent.right = newNode;
     }
   }
 }
 
+let array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
 let nums = mergeSort(array);
+
 console.log(nums);
-// let bst = new Tree();
-
-// nums.forEach((element) => {
-//   bst.insert(element);
-// });
-
-// bst.buildTree(nums);
-// prettyPrint();
 let number = new Tree();
-number.buildTree(nums, 0, nums.length - 1);
-console.log(number);
+let root = number.buildTree(nums, 0, nums.length - 1);
+
+let pretty = number.prettyPrint(root);

@@ -38,52 +38,36 @@ class Tree {
     this.root = null;
   }
 
-  buildTree(array) {
-    let mid = Math.floor(array.length / 2);
-    let middle = array.splice(mid, 1);
-    let left = array.splice(0, mid);
-    let right = array;
-    let current = this.root;
-    while (this.root === null) {
-      this.root = current;
-      current = new Node(Number(middle));
-      if (array.length > 1 && middle < current) {
-        current.left = this.buildTree(left);
-      }
-      if (array.length > 1 && middle > current) {
-        current.right = this.buildTree(right);
-      }
-      console.log(current);
+  buildTree(array, start, end) {
+    if (start > end) {
+      return null;
     }
+    let mid = Math.floor((start + end) / 2);
+    let current = new Node(array[mid]);
 
+    current.left = this.buildTree(array, start, mid - 1);
+    current.right = this.buildTree(array, mid + 1, end);
+
+    // const node = this.root;
+    // const prettyPrint = (node, prefix = "", isLeft = true) => {
+    //   if (node === null) {
+    //     return;
+    //   }
+    //   if (node.right !== null) {
+    //     prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    //   }
+    //   console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    //   if (node.left !== null) {
+    //     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    //   }
+    // };
+    if (!this.root) {
+      this.root = current;
+    }
     return current;
-    // if (current.left === null) {
-    //   current.left = this.buildTree(left);
-    // }
-
-    // if (current.left === null && left.length !== 0) {
-
-    //   return current.left = this.buildTree(left);
-
-    // }
-    // console.log(current);
   }
 
   insert(data) {
-    const node = this.root;
-    const prettyPrint = (node, prefix = "", isLeft = true) => {
-      if (node === null) {
-        return;
-      }
-      if (node.right !== null) {
-        prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-      }
-      console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-      if (node.left !== null) {
-        prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-      }
-    };
-
     if (!node) {
       this.root = new Node(data);
       return;
@@ -114,20 +98,14 @@ class Tree {
 
 let nums = mergeSort(array);
 console.log(nums);
-let bst = new Tree();
+// let bst = new Tree();
 
-nums.forEach((element) => {
-  bst.insert(element);
-});
-
-// bst.insert(6);
-// bst.insert(1);
-// bst.insert(3);
-// bst.insert(2);
-// bst.insert(0);
-// console.log(bst);
+// nums.forEach((element) => {
+//   bst.insert(element);
+// });
 
 // bst.buildTree(nums);
 // prettyPrint();
 let number = new Tree();
-number.buildTree(nums);
+number.buildTree(nums, 0, nums.length - 1);
+console.log(number);

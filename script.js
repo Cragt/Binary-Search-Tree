@@ -22,7 +22,6 @@ function mergeSort(array) {
   return merge(mergeSort(left), mergeSort(array));
 }
 
-
 //BST contructor
 class Node {
   constructor(data) {
@@ -36,73 +35,77 @@ class Tree {
   constructor() {
     this.root = null;
   }
-  
+
   buildTree(array, start, end) {
     if (start > end) {
       return null;
     }
     let mid = Math.floor((start + end) / 2);
     let current = new Node(array[mid]);
-    
+
     current.left = this.buildTree(array, start, mid - 1);
     current.right = this.buildTree(array, mid + 1, end);
-    
+
     if (!this.root) {
       this.root = current;
     }
-    // let pretty = this.prettyPrint(current);
     return current;
   }
-  
+
   prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
     }
     if (node.right !== null) {
-      this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+      this.prettyPrint(
+        node.right,
+        `${prefix}${isLeft ? "│   " : "    "}`,
+        false
+      );
     }
     console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
     if (node.left !== null) {
       this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-    };
+    }
   };
-  insert(data) {
-    let newNode = new Node(data);
-  
-    if (!this.root) {
-      this.root = newNode;
-      return;
-    }
-  
-    let current = this.root;
-    let parent = null;
-  
-    while (current) {
-      parent = current;
-      if (data < current.data) {
-        current = current.left;
-      } else if (data > current.data) {
-        current = current.right;
-      } else {
-        // node with same value already exists in the tree
-        return;
-      }
-    }
-  
-    if (data < parent.data) {
-      parent.left = newNode;
-    } else {
-      parent.right = newNode;
-    }
-  }
+
+  // insert(data) {
+  //   let node = this.root;
+  //   if (!node) {
+  //     this.root = new Node(data);
+  //     return;
+  //   } else {
+  //     console.log(data > node.data)
+  //     const searchTree = function (node, data) {
+  //       if (data < node.data) {
+  //         if (node.left === null) {
+  //           node.left = new Node(data);
+  //           return;
+  //         } else {
+  //           return searchTree(node.left, data);
+  //         }
+  //       } else if (data > node.data) {
+  //         if (node.right === null) {
+  //           node.right = new Node(data);
+  //           return;
+  //         } else {
+  //           return searchTree(node.right, data);
+  //         }
+  //       } else {
+  //         return null;
+  //       }
+  //     };
+  //     searchTree(this.root, data);
+  //   }
+  // }
 }
 
 let array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let nums = mergeSort(array);
-
 console.log(nums);
 let number = new Tree();
 let root = number.buildTree(nums, 0, nums.length - 1);
+// number.insert(75);
 
 let pretty = number.prettyPrint(root);

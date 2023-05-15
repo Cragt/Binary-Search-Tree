@@ -30,28 +30,27 @@ class Node {
     this.right = null;
   }
 }
-
 class Tree {
   constructor() {
     this.root = null;
   }
-
+  
   buildTree(array, start, end) {
     if (start > end) {
       return null;
     }
     let mid = Math.floor((start + end) / 2);
     let current = new Node(array[mid]);
-
+    
     current.left = this.buildTree(array, start, mid - 1);
     current.right = this.buildTree(array, mid + 1, end);
-
+    
     if (!this.root) {
       this.root = current;
     }
     return current;
   }
-
+  
   prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -61,43 +60,32 @@ class Tree {
         node.right,
         `${prefix}${isLeft ? "│   " : "    "}`,
         false
-      );
-    }
-    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-    if (node.left !== null) {
-      this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-    }
-  };
+        );
+      }
+      console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+      if (node.left !== null) {
+        this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+      }
+    };
+    
+  insert(data, root) {
+    if (root === null) {
+      console.log(root)
+      return new Node(data);
+    };
 
-  // insert(data) {
-  //   let node = this.root;
-  //   if (!node) {
-  //     this.root = new Node(data);
-  //     return;
-  //   } else {
-  //     console.log(data > node.data)
-  //     const searchTree = function (node, data) {
-  //       if (data < node.data) {
-  //         if (node.left === null) {
-  //           node.left = new Node(data);
-  //           return;
-  //         } else {
-  //           return searchTree(node.left, data);
-  //         }
-  //       } else if (data > node.data) {
-  //         if (node.right === null) {
-  //           node.right = new Node(data);
-  //           return;
-  //         } else {
-  //           return searchTree(node.right, data);
-  //         }
-  //       } else {
-  //         return null;
-  //       }
-  //     };
-  //     searchTree(this.root, data);
-  //   }
-  // }
+    if (data < root.data) {
+      console.log('< ' + root.data);
+      root.left = this.insert(data, root.left);
+      // console.log(root.data)
+    }
+    if (data > root.data) {
+      console.log('> ' + root.data);
+      root.right = this.insert(data, root.right);
+    }
+    console.log(data, root);
+    return root;
+  }
 }
 
 let array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -106,6 +94,14 @@ let nums = mergeSort(array);
 console.log(nums);
 let number = new Tree();
 let root = number.buildTree(nums, 0, nums.length - 1);
-// number.insert(75);
+
+// Insert Method
+number.insert(6, root);
+
+
+
+
+
+
 
 let pretty = number.prettyPrint(root);

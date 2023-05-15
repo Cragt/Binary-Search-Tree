@@ -34,23 +34,23 @@ class Tree {
   constructor() {
     this.root = null;
   }
-  
+
   buildTree(array, start, end) {
     if (start > end) {
       return null;
     }
     let mid = Math.floor((start + end) / 2);
     let current = new Node(array[mid]);
-    
+
     current.left = this.buildTree(array, start, mid - 1);
     current.right = this.buildTree(array, mid + 1, end);
-    
+
     if (!this.root) {
       this.root = current;
     }
     return current;
   }
-  
+
   prettyPrint = (node = this.root, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -60,32 +60,50 @@ class Tree {
         node.right,
         `${prefix}${isLeft ? "│   " : "    "}`,
         false
-        );
-      }
-      console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-      if (node.left !== null) {
-        this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-      }
-    };
-    
+      );
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.left !== null) {
+      this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+  };
+
   insert(data, root) {
     if (root === null) {
-      console.log(root)
       return new Node(data);
-    };
+    }
 
     if (data < root.data) {
-      console.log('< ' + root.data);
       root.left = this.insert(data, root.left);
       // console.log(root.data)
     }
     if (data > root.data) {
-      console.log('> ' + root.data);
       root.right = this.insert(data, root.right);
     }
-    console.log(data, root);
     return root;
   }
+
+  // delete(data, root) {
+  //   if (root === null) {
+  //     return;
+  //   }
+  //   if (data === root.data) {
+  //     return (root = root.right);
+  //   }
+  //   if (data < root.data) {
+  //     root.left = delete (data, root.left);
+  //   }
+  //   if (data > root.data) {
+  //     root.right = delete (data, root.right);
+  //   } else {
+  //     if (root.left === null) {
+  //       return root.right;
+  //     } else if (root.right === null) {
+  //       return root.left;
+  //     }
+  //   }
+  //   return root;
+  // }
 }
 
 let array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -95,13 +113,8 @@ console.log(nums);
 let number = new Tree();
 let root = number.buildTree(nums, 0, nums.length - 1);
 
-// Insert Method
+// Insert function
 number.insert(6, root);
-
-
-
-
-
-
-
+// Delete function
+// number.delete(4, root);
 let pretty = number.prettyPrint(root);
